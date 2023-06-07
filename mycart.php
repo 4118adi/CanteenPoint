@@ -1,114 +1,118 @@
 <?php
-session_start();
-// session_destroy();
+
+@include 'config.php';
+
+if (isset($_POST['update_update_btn'])) {
+   $update_value = $_POST['update_quantity'];
+   $update_id = $_POST['update_quantity_id'];
+   $update_quantity_query = mysqli_query($conn, "UPDATE `cart` SET quantity = '$update_value' WHERE id = '$update_id'");
+   if ($update_quantity_query) {
+      header('location:cart.php');
+   };
+};
+
+if (isset($_GET['remove'])) {
+   $remove_id = $_GET['remove'];
+   mysqli_query($conn, "DELETE FROM `cart` WHERE id = '$remove_id'");
+   header('location:cart.php');
+};
+
+if (isset($_GET['delete_all'])) {
+   mysqli_query($conn, "DELETE FROM `cart`");
+   header('location:cart.php');
+}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>shopping cart</title>
 
-    <!-- font awesome cdn link  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <!-- custom css file link  -->
-    <link rel="stylesheet" href="cartcss.css">
+   <!-- custom css file link  -->
+   <link rel="stylesheet" href="css/style.css">
 
-    <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
 
 <body>
-    <!-- header section starts  -->
-    <nav class="navbar-navbar-expand-lg-bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#"></a>
 
-            <div class="collapse-navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link-active" aria-current="page" href="index.php">Home</a>
-                    </li>
-            </div>
-        </div>
-    </nav>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center bg-dark">
-                <h1 id="carttitle">MY CART</h1>
-            </div>
-        </div>
-        <div class="col-lg-8">
-            <table class="table table-dark table-hover text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">Serial No.</th>
-                        <th scope="col">Item Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Total</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if (isset($_SESSION['cart'])) {
-                        foreach ($_SESSION['cart'] as $key => $value) {
-                            $sr = $key + 1;
-                            echo "
-                            <tr>
-                            <td>$sr</td>
-                            <td>$value[Item_name]</td>
-                            <td>$value[Price]<input type='hidden' class='iprice' value='$value[Price]'></td>
-                            <td><input class='text-center iQuantity' onchange='subTotal()' type='number' value='$value[Quantity]' min=1 max=4></td>
-                            <td class='itotal'></td>
-                            <td>
-                              <form method='POST' action='manage_cart.php'>
-                                <button name='remove' class='btn btn-sm btn-outline-danger'>REMOVE</button>
-                                <input type='hidden' name='Item_name' value='$value[Item_name]'>
-                              </form>
-                            </td>
-                            </tr>
-                            ";
-                        }
-                    } else {
-                        echo
-                        "<tr>
-                        <td colspan = 6>Empty Cart and Empty Stomach, both needed to be filled...:)</td>
-                        </tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-lg-4">
-            <h4 id="total">Grand Total</h4>
-            <h5 id="gTotal"></h5>
-            <form action="">
-                <button class="btn-btn-primary">Checkout</button>
-            </form>
-        </div>
-    </div>
+   <?php include 'header.php'; ?>
 
-    <script>
-        let gt = 0;
-        let iprice = document.getElementsByClassName('iprice');
-        let iQuantity = document.getElementsByClassName('iQuantity');
-        let itotal = document.getElementsByClassName('itotal');
-        let gTotal = document.getElementById('gTotal');
+   <div class="container">
 
-        function subTotal() {
-            gt = 0;
-            for (let i = 0; i < iprice.length; i++) {
-                itotal[i].innerText = (iprice[i].value) * (iQuantity[i].value);
-                gt += (iprice[i].value) * (iQuantity[i].value);
-            }
-            gTotal.innerText = gt;
-        }
-        subTotal();
-    </script>
+      <section class="shopping-cart">
+
+         <h1 class="heading">shopping cart</h1>
+
+         <table>
+
+            <thead>
+               <th>image</th>
+               <th>name</th>
+               <th>price</th>
+               <th>quantity</th>
+               <th>total price</th>
+               <th>action</th>
+            </thead>
+
+            <tbody>
+
+               <?php
+
+               $select_cart = mysqli_query($conn, "SELECT * FROM `cart`");
+               $grand_total = 0;
+               if (mysqli_num_rows($select_cart) > 0) {
+                  while ($fetch_cart = mysqli_fetch_assoc($select_cart)) {
+               ?>
+
+                     <tr>
+                        <td><img src="uploaded_img/<?php echo $fetch_cart['image']; ?>" height="100" alt=""></td>
+                        <td><?php echo $fetch_cart['name']; ?></td>
+                        <td>$<?php echo number_format($fetch_cart['price']); ?>/-</td>
+                        <td>
+                           <form action="" method="post">
+                              <input type="hidden" name="update_quantity_id" value="<?php echo $fetch_cart['id']; ?>">
+                              <input type="number" name="update_quantity" min="1" value="<?php echo $fetch_cart['quantity']; ?>">
+                              <input type="submit" value="update" name="update_update_btn">
+                           </form>
+                        </td>
+                        <td>$<?php echo $sub_total = number_format($fetch_cart['price'] * $fetch_cart['quantity']); ?>/-</td>
+                        <td><a href="cart.php?remove=<?php echo $fetch_cart['id']; ?>" onclick="return confirm('remove item from cart?')" class="delete-btn"> <i class="fas fa-trash"></i> remove</a></td>
+                     </tr>
+               <?php
+                     $grand_total += $sub_total;
+                  };
+               };
+               ?>
+               <tr class="table-bottom">
+                  <td><a href="products.php" class="option-btn" style="margin-top: 0;">continue shopping</a></td>
+                  <td colspan="3">grand total</td>
+                  <td>$<?php echo $grand_total; ?>/-</td>
+                  <td><a href="cart.php?delete_all" onclick="return confirm('are you sure you want to delete all?');" class="delete-btn"> <i class="fas fa-trash"></i> delete all </a></td>
+               </tr>
+
+            </tbody>
+
+         </table>
+
+         <div class="checkout-btn">
+            <a href="checkout.php" class="btn <?= ($grand_total > 1) ? '' : 'disabled'; ?>">procced to checkout</a>
+         </div>
+
+      </section>
+
+   </div>
+
+   <!-- custom js file link  -->
+   <script src="js/script.js"></script>
+
 </body>
 
 </html>
