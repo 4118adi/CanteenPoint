@@ -12,6 +12,7 @@
    --border:.1rem solid #999;
 }
 
+
 *{
    font-family: 'Poppins', sans-serif;
    margin:0; padding:0;
@@ -50,7 +51,7 @@ section{
    display: block;
    width: 100%;
    text-align: center;
-   background-color: var(--blue);
+   background-color: #1a1a1a;
    color:var(--white);
    font-size: 1.7rem;
    padding:1.2rem 3rem;
@@ -80,12 +81,12 @@ section{
 }
 
 .message{
-   background-color: var(--blue);
+   background-color: #1a1a1a;
    position: sticky;
    top:0; left:0;
    z-index: 10000;
    border-radius: .5rem;
-   background-color: var(--white);
+   background-color: #666666;
    padding:1.5rem 2rem;
    margin:0 auto;
    max-width: 1200px;
@@ -111,7 +112,7 @@ section{
 }
 
 .header{
-   background-color: var(--blue);
+   background-color:#1a1a1a ;
    position: sticky;
    top:0; left:0;
    z-index: 1000;
@@ -128,34 +129,34 @@ section{
 .header .flex .logo{
    margin-right: auto;
    font-size: 2.5rem;
-   color:var(--white);
+   color:#666666;
 }
 
 .header .flex .navbar a{
    margin-left: 2rem;
    font-size: 2rem;
-   color:var(--white);
+   color:#666666;
 }
 
 .header .flex .navbar a:hover{
-   color:yellow;
+   color:#FF1818;
 }
 
 .header .flex .cart{
    margin-left: 2rem;
    font-size: 2rem;
-   color:var(--white);
+   color:#666666;
 }
 
 .header .flex .cart:hover{
-   color:yellow;
+   color:#FF1818;
 }
 
 .header .flex .cart span{
    padding:.1rem .5rem;
    border-radius: .5rem;
-   background-color: var(--white);
-   color:var(--blue);
+   background-color: #666666;
+   color:#1a1a1a;
    font-size: 2rem;
 }
 
@@ -163,7 +164,7 @@ section{
    margin-left: 2rem;
    font-size: 3rem;
    cursor: pointer;
-   color:var(--white);
+   color:#666666;
    display: none;
 }
 
@@ -440,7 +441,7 @@ section{
 }
 
 .order-message-container::-webkit-scrollbar-thumb{
-   background-color: var(--blue);
+   background-color: #1a1a1a;
 }
 
 .order-message-container .message-container{
@@ -490,7 +491,7 @@ section{
 }
 
 .order-message-container .message-container .customer-details p span{
-   color:var(--blue);
+   color:#1a1a1a;
    padding:0 .5rem;
    text-transform: none;
 }
@@ -556,7 +557,7 @@ section{
    .header .flex .navbar{
       position: absolute;
       top:99%; left:0; right:0;
-      background-color: var(--blue);
+      background-color: #1a1a1a;
       clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
       transition: .2s linear;
    }

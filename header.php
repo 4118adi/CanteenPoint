@@ -1,6 +1,5 @@
 <header>
-    <a href="https://www.gsfcuni.edu.in/" target="_main"><img src="images/icon.png" alt=""></a>
-    <a href="https://www.gsfcuni.edu.in/" class="logo">GSFC University</a>
+    <a href="https://www.gsfcuni.edu.in/" class="logo">CanteenPoint</a>
 
     <div id="menu-bar" class="fas fa-bars"></div>
 
